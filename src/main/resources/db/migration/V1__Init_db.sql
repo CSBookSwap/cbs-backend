@@ -5,6 +5,8 @@ CREATE TABLE author
     biography TEXT NOT NULL
 );
 
+CREATE INDEX idx_author_name ON author (name);
+
 CREATE TABLE book
 (
     id               SERIAL PRIMARY KEY,
@@ -18,6 +20,10 @@ CREATE TABLE book
     created_at       timestamptz           DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX idx_book_title ON book (title);
+CREATE INDEX idx_book_author_id ON book (author_id);
+CREATE INDEX idx_book_isbn ON book (isbn);
+
 CREATE TABLE tag
 (
     id   SERIAL PRIMARY KEY,
@@ -26,9 +32,9 @@ CREATE TABLE tag
 
 CREATE TABLE book_tags
 (
-    book_id INTEGER REFERENCES book (id) ON DELETE CASCADE ,
-    tag_id  INTEGER REFERENCES tag (id) ON DELETE CASCADE ,
-    PRIMARY KEY (book_id, tag_id)
+    book_id INTEGER REFERENCES book (id) ON DELETE CASCADE,
+    tag_id  INTEGER REFERENCES tag (id) ON DELETE CASCADE,
+    UNIQUE (book_id, tag_id)
 );
 
 CREATE TABLE user_
@@ -39,6 +45,7 @@ CREATE TABLE user_
     created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX idx_user_username ON user_ (username);
 
 CREATE TABLE location
 (
@@ -54,6 +61,10 @@ CREATE TABLE book_owner
     location INTEGER REFERENCES location(id)
 );
 
+CREATE INDEX idx_book_owner_id ON book_owner (owner_id);
+CREATE INDEX idx_book_owner_book_id ON book_owner (book_id);
+
+
 CREATE TABLE read_book
 (
     user_id   INTEGER REFERENCES user_ (id) ON DELETE CASCADE ,
@@ -63,4 +74,4 @@ CREATE TABLE read_book
     PRIMARY KEY (user_id, book_id)
 );
 
-
+CREATE INDEX idx_read_book_user_id ON read_book (user_id);

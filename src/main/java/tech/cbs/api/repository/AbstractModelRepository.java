@@ -14,4 +14,6 @@ public interface AbstractModelRepository <T extends Model> {
     boolean saveAll(List<T> models);
     boolean update(T model);
     boolean deleteById(int id);
+
+    boolean deleteByIds(List<Integer> ids);
 }

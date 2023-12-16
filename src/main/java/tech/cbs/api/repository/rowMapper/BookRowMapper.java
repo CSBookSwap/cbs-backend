@@ -13,6 +13,7 @@ public class BookRowMapper implements RowMapper<Book> {
 
     @Override
     public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+
         var book = new Book(
                 rs.getInt("id"),
                 rs.getString("title"),
@@ -24,22 +25,14 @@ public class BookRowMapper implements RowMapper<Book> {
                 rs.getBoolean("available"),
                 new HashSet<>()
         );
-        mapTag(rs, book);
-        return book;
-    }
 
-    private void mapTag(ResultSet rs, Book book) throws SQLException {
-
-        while (rs.next() && rs.getInt("id") == book.id()) {
+        do {
             book.tags().add(new Tag(
                     rs.getInt("tag_id"),
                     rs.getString("tag_name")
             ));
-        }
+        } while (rs.next());
 
-//        String tagName = rs.getString("tag_name");
-//        if (tagName != null) {
-//            book.tags().add(new Tag(rs.getInt("tag_id"), tagName));
-//        }
+        return book;
     }
 }
