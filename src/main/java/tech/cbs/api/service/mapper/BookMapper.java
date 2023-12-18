@@ -5,6 +5,9 @@ import tech.cbs.api.service.dto.BookDto;
 
 import java.util.function.Function;
 
+/**
+ * Mapper for {@link Book}
+ */
 public class BookMapper implements Function<Book, BookDto> {
     @Override
     public BookDto apply(Book book) {

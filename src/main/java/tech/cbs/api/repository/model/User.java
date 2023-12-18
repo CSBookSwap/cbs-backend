@@ -2,6 +2,9 @@ package tech.cbs.api.repository.model;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+/**
+ * User model
+ */
 public record User(
         int id,
         String username,

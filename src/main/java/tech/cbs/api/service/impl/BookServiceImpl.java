@@ -39,7 +39,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto createBook(BookDto bookDto) {
-        return bookMapper.toDto(bookRepository.save(bookMapper.toModel(bookDto)));
+
+        int bookId = bookRepository.save(bookMapper.toModel(bookDto));
+        return bookMapper.toDto(bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find book with id " + bookId)));
     }
 
     @Override

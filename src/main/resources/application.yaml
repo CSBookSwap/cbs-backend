@@ -2,15 +2,10 @@ spring:
   main:
     banner-mode: off
   datasource:
-    hikari:
-      jdbc-url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST:localhost}:${BOOKSWAP_POSTGRES_PORT:5432}/bookswap_db
-      username: bookswap-api
-      password: ${STORE_POSTGRES_PASSWORD:bookswapPassWord}
-      driver-class-name: org.postgresql.Driver
-      connection-timeout: 20000
-      minimum-idle: 5
-      maximum-pool-size: 10
-      max-lifetime: 90000
+    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST:localhost}:${BOOKSWAP_POSTGRES_PORT:5432}/bookswap_db
+    username: bookswap-api
+    password: ${STORE_POSTGRES_PASSWORD:bookswapPassWord}
+    driver-class-name: org.postgresql.Driver
 
 server:
   port: 8082

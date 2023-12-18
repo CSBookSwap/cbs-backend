@@ -5,6 +5,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import java.sql.Types;
 import java.util.Set;
 
+/**
+ * Book model
+ */
 public record Book(
         int id,
         String title,
