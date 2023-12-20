@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tech.cbs.api.service.BookService;
 import tech.cbs.api.service.dto.BookDto;
 import tech.cbs.api.service.dto.Page;
-import tech.cbs.api.service.BookService;
 
 import java.util.List;
 
@@ -34,6 +34,19 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getBook(@PathVariable("id") int id) {
         return ResponseEntity.ok(bookService.getBook(id));
+    }
+
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<BookDto>> getBooksByAuthor(@PathVariable("id") int id) {
+        return ResponseEntity.ok(bookService.getBooksByAuthor(id));
+    }
+
+    @GetMapping("/tag/{id}/{num}/{size}")
+    public ResponseEntity<List<BookDto>> getBooksByTag(
+            @PathVariable("id") int id,
+            @PathVariable("num") int num,
+            @PathVariable("size") int size) {
+        return ResponseEntity.ok(bookService.getBooksByTag(id, new Page(num, size)));
     }
 
     @PostMapping

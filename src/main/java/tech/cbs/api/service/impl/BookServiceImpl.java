@@ -9,49 +9,64 @@ import tech.cbs.api.service.dto.Page;
 import tech.cbs.api.service.mapper.BookMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final BookMapper bookMapper;
-
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookMapper = new BookMapper();
     }
 
     @Override
     public List<BookDto> getBooks(Page page) {
         return bookRepository.findAll(page)
                 .stream()
-                .map(bookMapper)
-                .collect(Collectors.toList());
+                .map(BookMapper::toDto)
+                .toList();
     }
 
     @Override
     public BookDto getBook(int id) {
-        return bookMapper.toDto(bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Could not find book with id " + id)));
+        return bookRepository.findById(id)
+                .map(BookMapper::toDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find book with id " + id));
     }
 
     @Override
     public BookDto createBook(BookDto bookDto) {
 
-        int bookId = bookRepository.save(bookMapper.toModel(bookDto));
-        return bookMapper.toDto(bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Could not find book with id " + bookId)));
+        var book = BookMapper.toModel(bookDto);
+        int bookId = bookRepository.save(book);
+        return bookRepository.findById(bookId)
+                .map(BookMapper::toDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Book cannot be created."));
     }
 
     @Override
     public boolean updateBook(BookDto bookDto) {
-        return bookRepository.update(bookMapper.toModel(bookDto));
+        return bookRepository.update(BookMapper.toModel(bookDto));
     }
 
     @Override
     public boolean deleteBook(int id) {
         return bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> getBooksByAuthor(int id) {
+        return bookRepository.findByAuthorId(id)
+                .stream()
+                .map(BookMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<BookDto> getBooksByTag(int id, Page page) {
+        return bookRepository.findByTagId(id, page)
+                .stream()
+                .map(BookMapper::toDto)
+                .toList();
     }
 }

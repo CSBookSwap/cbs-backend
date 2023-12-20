@@ -36,7 +36,6 @@ import tech.cbs.api.repository.model.Book;
 import tech.cbs.api.repository.model.Tag;
 import tech.cbs.api.service.dto.Page;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -164,37 +163,20 @@ public class BookRepositoryImpl implements BookRepository {
 
         parameterJdbcTemplate.update(sql, book.createParameterSources());
 
-        List<Integer> newTags = new ArrayList<>(book.tags().stream().map(Tag::id).toList());
+        parameterJdbcTemplate.update("DELETE FROM book_tags WHERE book_id=:id;", Map.of("id", book.id()));
 
-        List<Integer> tagsInDb = parameterJdbcTemplate
-                .queryForList("SELECT tag_id FROM book_tags WHERE book_id = :book_id",
-                        new MapSqlParameterSource("book_id", book.id()), Integer.class);
-
-        newTags.removeAll(tagsInDb);
-
-        SqlParameterSource[] argsForBatchDelete = tagsInDb.stream()
-                .filter(tagIdInDb -> !newTags.contains(tagIdInDb))
-                .map(tagId -> new MapSqlParameterSource()
+        SqlParameterSource[] argsForBatchInsert = book.tags()
+                .stream()
+                .map(tag -> new MapSqlParameterSource()
                         .addValue("book_id", book.id())
-                        .addValue("tag_id", tagId))
-                .toList()
+                        .addValue("tag_id", tag.id()))
                 .toArray(SqlParameterSource[]::new);
 
-        SqlParameterSource[] argsForBatchAdd = newTags.stream()
-                .filter(newTagId -> !tagsInDb.contains(newTagId))
-                .map(tagId -> new MapSqlParameterSource()
-                        .addValue("book_id", book.id())
-                        .addValue("tag_id", tagId))
-                .toList()
-                .toArray(SqlParameterSource[]::new);
-
-        var BATCH_TAG_DELETE_SQL = "DELETE FROM book_tags WHERE book_id = :book_id AND tag_id = :tag_id;";
         var BATCH_TAG_ADD_SQL = "INSERT INTO book_tags(book_id, tag_id) VALUES (:book_id, :tag_id);";
 
-        int[] deleteUpdadates = parameterJdbcTemplate.batchUpdate(BATCH_TAG_DELETE_SQL, argsForBatchDelete);
-        int[] addUpdates = parameterJdbcTemplate.batchUpdate(BATCH_TAG_ADD_SQL, argsForBatchAdd);
+        int[] addUpdates = parameterJdbcTemplate.batchUpdate(BATCH_TAG_ADD_SQL, argsForBatchInsert);
 
-        return deleteUpdadates.length == argsForBatchDelete.length && addUpdates.length == argsForBatchAdd.length;
+        return addUpdates.length == book.tags().size();
     }
 
     @Override

@@ -1,4 +1,4 @@
 package tech.cbs.api.service.dto;
 
-public record TagDto() {
+public record TagDto(int id, String name) {
 }

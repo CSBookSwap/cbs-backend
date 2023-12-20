@@ -291,16 +291,27 @@ class BookServiceTest {
     @Test
     void BookService_GetBooksByTag_ReturnsListOfBookDtoWithTag() {
 
-        TagDto tagDto = testTags.get(rn.nextInt(0, tagCount - 1));
+//        TagDto tagDto = testTags.get(rn.nextInt(0, tagCount - 1));
 
-        List<BookDto> bookDtos = bookService.getBooksByTag(tagDto.id(), new Page(0, bookCount));
+        int testTagId = testBooks
+                .stream()
+                .flatMap(bookDto -> bookDto.tags().stream())
+                .collect(Collectors.groupingBy(TagDto::id, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() >= 2)
+                .map(Map.Entry::getKey)
+                .findAny().get();
+
+
+        List<BookDto> bookDtos = bookService.getBooksByTag(testTagId, new Page(0, bookCount));
 
         assertThat(bookDtos).isNotNull();
         assertThat(bookDtos.size()).isGreaterThan(0);
         bookDtos.forEach(bookDto -> {
             assertThat(bookDto.tags()).isNotNull();
             assertThat(bookDto.tags().size()).isGreaterThan(0);
-            assertThat(bookDto.tags().stream().anyMatch(tag -> tag.id() == tagDto.id())).isTrue();
+            assertThat(bookDto.tags().stream().anyMatch(tag -> tag.id() == testTagId)).isTrue();
         });
     }
 }

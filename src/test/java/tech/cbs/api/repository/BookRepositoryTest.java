@@ -110,7 +110,7 @@ class BookRepositoryTest {
     }
 
     @AfterEach
-    void clearData() {
+    void cleanData() {
         var DELETE_ALL_SQL = """
                 DELETE FROM book;
                 DELETE FROM author;

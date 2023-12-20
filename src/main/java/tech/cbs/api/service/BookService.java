@@ -16,4 +16,8 @@ public interface BookService {
     boolean updateBook(BookDto bookDto);
 
     boolean deleteBook(int id);
+
+    List<BookDto> getBooksByAuthor(int id);
+
+    List<BookDto> getBooksByTag(int id, Page page);
 }
