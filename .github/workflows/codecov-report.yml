@@ -1,4 +1,4 @@
-name: Java CI
+name: Codecov repo covered
 
 on:
   push:
