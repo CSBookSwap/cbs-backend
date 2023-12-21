@@ -89,7 +89,7 @@ class BookServiceTest {
         List<AuthorDto> createdAuthors = new ArrayList<>();
 
         for (int i = 0; i < authorCount; i++) {
-            createdAuthors.add(new AuthorDto(i, "Author #" + rn.nextInt(1, 3000), "Biography #" + i));
+            createdAuthors.add(new AuthorDto(0, "Author name #" + rn.nextInt(), "Biography #" + i));
         }
         createdAuthors.stream()
                 .map(AuthorMapper::toModel)
@@ -102,7 +102,7 @@ class BookServiceTest {
         List<TagDto> createdTags = new ArrayList<>();
 
         for (int i = 0; i < tagCount; i++) {
-            createdTags.add(new TagDto(i, "Tag #" + rn.nextInt(1, 3000)));
+            createdTags.add(new TagDto(0, "Tag name#" + rn.nextInt()));
         }
         createdTags.stream()
                 .map(TagMapper::toModel)
@@ -122,12 +122,13 @@ class BookServiceTest {
                             "Book Title #" + rn.nextInt(),
                             testAuthors.get(rn.nextInt(0, authorCount - 1)).id(),
                             1980 + i % 10,
-                            "ISBN #" + rn.nextInt(1000000),
+                            "ISBN #" + rn.nextInt(0, 9999999),
                             Level.values()[rn.nextInt(0, 2)].name(),
                             "Description #" + i,
                             i % 2 == 0,
                             testTags
                                     .stream()
+                                    .filter(tag -> rn.nextBoolean())
                                     .limit(rn.nextInt(1, 4))
                                     .collect(Collectors.toSet())
                     )
