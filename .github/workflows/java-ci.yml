@@ -65,6 +65,10 @@ jobs:
         if: success() || failure()
         with:
           report_paths: 'TEST-*.xml'
+          check_name: 'CBS Test Report'
+          include_passed: true
+          detailed_summary: true
+          follow_symlink: true
 
   upload_coverage:
     runs-on: ubuntu-latest
@@ -80,28 +84,28 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  update_main_branch:
-    runs-on: ubuntu-latest
-    needs: [ tests ]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      #        with:
-      #          ref: main
-      #          fetch-depth: 0
-
-      - name: Switch to main branch
-        run: git checkout main
-
-      - name: Fetch latest changes from origin
-        run: git pull origin main
-
-      - name: Rebase dev into main
-        run: git rebase dev
-
-      - name: Push changes to main
-        run: git push origin main
+#  update_main_branch:
+#    runs-on: ubuntu-latest
+#    needs: [ tests ]
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#      #        with:
+#      #          ref: main
+#      #          fetch-depth: 0
+#
+#      - name: Switch to main branch
+#        run: git checkout main
+#
+#      - name: Fetch latest changes from origin
+#        run: git pull origin main
+#
+#      - name: Rebase dev into main
+#        run: git rebase dev
+#
+#      - name: Push changes to main
+#        run: git push origin main
 
 #      - name: Merge dev into main
 #        run: |
