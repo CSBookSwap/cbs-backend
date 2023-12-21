@@ -290,9 +290,6 @@ class BookServiceTest {
 
     @Test
     void BookService_GetBooksByTag_ReturnsListOfBookDtoWithTag() {
-
-//        TagDto tagDto = testTags.get(rn.nextInt(0, tagCount - 1));
-
         int testTagId = testBooks
                 .stream()
                 .flatMap(bookDto -> bookDto.tags().stream())
