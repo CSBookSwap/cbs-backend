@@ -105,7 +105,7 @@ class TagRepositoryTest {
     }
 
     private static Tag createTag() {
-        return new Tag(0, "Test Tag name #" + rn.nextInt());
+        return new Tag(0, "Test Tag name #" + rn.nextInt(9999999999));
     }
 
     @BeforeEach
