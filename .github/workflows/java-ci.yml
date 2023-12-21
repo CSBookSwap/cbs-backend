@@ -54,7 +54,7 @@ jobs:
         if: success() || failure()
         with:
           name: CBS Tests
-          path: 'TEST-*.xml'
+          path: 'target/surefire-reports/TEST-*.xml'
           reporter: java-junit
 
   build_report:
