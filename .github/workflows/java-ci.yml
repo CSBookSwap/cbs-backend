@@ -77,16 +77,16 @@ jobs:
   #          git push origin main
   
 
-  build_report:
-
-    runs-on: ubuntu-latest
-    needs: [ tests ]
-
-    steps:
-      - name: Loading Test results
-        uses: actions/download-artifact@v4.1.0
-        with:
-          name: test_results
+  #  build_report:
+  #
+  #    runs-on: ubuntu-latest
+  #    needs: [ tests ]
+  #
+  #    steps:
+  #      - name: Loading Test results
+  #        uses: actions/download-artifact@v4.1.0
+  #        with:
+  #          name: test_results
 
   upload_coverage:
     runs-on: ubuntu-latest
