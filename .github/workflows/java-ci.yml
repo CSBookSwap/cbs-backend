@@ -48,8 +48,6 @@ jobs:
 
       - name: Tree
         run: tree -L 3
-      - name: Echo
-        run: echo ${{ github.ref }}
         
       - name: Test Report
         uses: dorny/test-reporter@v1
@@ -65,7 +63,7 @@ jobs:
           git fetch --all
           git branch -a  # Эта команда выводит список всех веток, чтобы вы могли проверить наличие ветки main
           git checkout main
-          git merge dev
+          git merge --allow-unrelated-histories dev
           git push origin main
   
 
