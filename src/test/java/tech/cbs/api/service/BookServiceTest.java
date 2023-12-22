@@ -57,6 +57,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Test class for {@link BookService}
+ */
 @SpringBootTest
 @Testcontainers
 class BookServiceTest {
@@ -89,12 +92,13 @@ class BookServiceTest {
         List<AuthorDto> createdAuthors = new ArrayList<>();
 
         for (int i = 0; i < authorCount; i++) {
-            createdAuthors.add(new AuthorDto(i, "Author #" + rn.nextInt(1, 3000), "Biography #" + i));
+            createdAuthors.add(new AuthorDto(0, "Author name #" + rn.nextInt(), "Biography #" + i));
         }
         createdAuthors.stream()
                 .map(AuthorMapper::toModel)
                 .map(authorRepository::save)
                 .map(authorRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(AuthorMapper::toDto)
                 .forEach(testAuthors::add);
@@ -102,12 +106,13 @@ class BookServiceTest {
         List<TagDto> createdTags = new ArrayList<>();
 
         for (int i = 0; i < tagCount; i++) {
-            createdTags.add(new TagDto(i, "Tag #" + rn.nextInt(1, 3000)));
+            createdTags.add(new TagDto(0, "Tag name#" + rn.nextInt()));
         }
         createdTags.stream()
                 .map(TagMapper::toModel)
                 .map(tagRepository::save)
                 .map(tagRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(TagMapper::toDto)
                 .forEach(testTags::add);
@@ -122,12 +127,13 @@ class BookServiceTest {
                             "Book Title #" + rn.nextInt(),
                             testAuthors.get(rn.nextInt(0, authorCount - 1)).id(),
                             1980 + i % 10,
-                            "ISBN #" + rn.nextInt(1000000),
+                            "ISBN #" + rn.nextInt(0, 9999999),
                             Level.values()[rn.nextInt(0, 2)].name(),
                             "Description #" + i,
                             i % 2 == 0,
                             testTags
                                     .stream()
+                                    .filter(tag -> rn.nextBoolean())
                                     .limit(rn.nextInt(1, 4))
                                     .collect(Collectors.toSet())
                     )
@@ -137,6 +143,7 @@ class BookServiceTest {
                 .map(BookMapper::toModel)
                 .map(bookRepository::save)
                 .map(bookRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(BookMapper::toDto)
                 .forEach(testBooks::add);
@@ -283,9 +290,7 @@ class BookServiceTest {
 
         assertThat(bookDtos).isNotNull();
         assertThat(bookDtos.size()).isGreaterThan(0);
-        bookDtos.forEach(bookDto -> {
-            assertThat(bookDto.authorId()).isEqualTo(authorDto.id());
-        });
+        bookDtos.forEach(bookDto -> assertThat(bookDto.authorId()).isEqualTo(authorDto.id()));
     }
 
     @Test
@@ -298,7 +303,9 @@ class BookServiceTest {
                 .stream()
                 .filter(entry -> entry.getValue() >= 2)
                 .map(Map.Entry::getKey)
-                .findAny().get();
+                .filter(tagId -> rn.nextBoolean())
+                .findAny()
+                .orElseGet(() -> testTags.get(rn.nextInt(0, tagCount - 1)).id());
 
 
         List<BookDto> bookDtos = bookService.getBooksByTag(testTagId, new Page(0, bookCount));

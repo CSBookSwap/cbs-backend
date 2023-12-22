@@ -73,35 +73,5 @@ public class BookResultSetExtractor implements ResultSetExtractor<List<Book>> {
             }
         }
         return new ArrayList<>(bookMap.values());
-
-//        Map<Integer, Book> bookMap = new HashMap<>();
-//
-//        while (rs.next()) {
-//            int bookId = rs.getInt("id");
-//            Book book = bookMap.computeIfAbsent(bookId, id -> {
-//                try {
-//                    return new Book(
-//                            id,
-//                            rs.getString("title"),
-//                            rs.getInt("author_id"),
-//                            rs.getInt("publication_year"),
-//                            rs.getString("isbn"),
-//                            Level.valueOf(rs.getString("level")),
-//                            rs.getString("description"),
-//                            rs.getBoolean("available"),
-//                            new HashSet<>()
-//                    );
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            });
-//
-//            int tagId = rs.getInt("tag_id");
-//            if (tagId != 0) {
-//                book.tags().add(new Tag(tagId, rs.getString("tag_name")));
-//            }
-//        }
-//
-//        return new ArrayList<>(bookMap.values());
     }
 }

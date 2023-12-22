@@ -25,7 +25,7 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> getTags(Page page) {
         return tagRepository.findAll(page)
                 .stream()
-                .map(tagMapper)
+                .map(TagMapper::toDto)
                 .toList();
     }
 

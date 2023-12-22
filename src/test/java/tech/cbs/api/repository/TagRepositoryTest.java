@@ -92,8 +92,8 @@ class TagRepositoryTest {
                 "Test Title for Book #" + rn.nextInt(),
                 testAuthors.get(author).id(),
                 rn.nextInt(1982, 2023),
-                "ISBN #" + rn.nextInt(1000000),
-                Level.values()[rn.nextInt(3)],
+                "ISBN #" + rn.nextInt(9999999),
+                Level.values()[rn.nextInt(0, 2)],
                 "Test Description #" + rn.nextInt(),
                 (rn.nextBoolean()),
                 new HashSet<>(tags.values())
@@ -105,7 +105,7 @@ class TagRepositoryTest {
     }
 
     private static Tag createTag() {
-        return new Tag(0, "Test Tag name #" + rn.nextInt(15000));
+        return new Tag(0, "Test Tag name #" + rn.nextInt(999999999));
     }
 
     @BeforeEach
