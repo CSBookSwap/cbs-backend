@@ -57,6 +57,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Test class for {@link BookService}
+ */
 @SpringBootTest
 @Testcontainers
 class BookServiceTest {
@@ -95,6 +98,7 @@ class BookServiceTest {
                 .map(AuthorMapper::toModel)
                 .map(authorRepository::save)
                 .map(authorRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(AuthorMapper::toDto)
                 .forEach(testAuthors::add);
@@ -108,6 +112,7 @@ class BookServiceTest {
                 .map(TagMapper::toModel)
                 .map(tagRepository::save)
                 .map(tagRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(TagMapper::toDto)
                 .forEach(testTags::add);
@@ -138,6 +143,7 @@ class BookServiceTest {
                 .map(BookMapper::toModel)
                 .map(bookRepository::save)
                 .map(bookRepository::findById)
+                .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(BookMapper::toDto)
                 .forEach(testBooks::add);
@@ -284,9 +290,7 @@ class BookServiceTest {
 
         assertThat(bookDtos).isNotNull();
         assertThat(bookDtos.size()).isGreaterThan(0);
-        bookDtos.forEach(bookDto -> {
-            assertThat(bookDto.authorId()).isEqualTo(authorDto.id());
-        });
+        bookDtos.forEach(bookDto -> assertThat(bookDto.authorId()).isEqualTo(authorDto.id()));
     }
 
     @Test
@@ -299,7 +303,9 @@ class BookServiceTest {
                 .stream()
                 .filter(entry -> entry.getValue() >= 2)
                 .map(Map.Entry::getKey)
-                .findAny().get();
+                .filter(tagId -> rn.nextBoolean())
+                .findAny()
+                .orElseGet(() -> testTags.get(rn.nextInt(0, tagCount - 1)).id());
 
 
         List<BookDto> bookDtos = bookService.getBooksByTag(testTagId, new Page(0, bookCount));

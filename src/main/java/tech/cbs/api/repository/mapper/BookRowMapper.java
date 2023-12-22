@@ -38,35 +38,7 @@ public class BookRowMapper implements RowMapper<Book> {
             }
         }
 
-//        do {
-//            int tagId = rs.getInt("tag_id");
-//            if (tagId != 0) {
-//                book.tags().add(new Tag(tagId, rs.getString("tag_name")));
-//            }
-//        } while (rs.next());
 
         return book;
-//        var book = new Book(
-//                rs.getInt("id"),
-//                rs.getString("title"),
-//                rs.getInt("author_id"),
-//                rs.getInt("publication_year"),
-//                rs.getString("isbn"),
-//                Level.valueOf(rs.getString("level")),
-//                rs.getString("description"),
-//                rs.getBoolean("available"),
-//                new HashSet<>()
-//        );
-//
-//        do {
-//            book.tags().add(
-//                    new Tag(
-//                            rs.getInt("tag_id"),
-//                            rs.getString("tag_name")
-//                    )
-//            );
-//        } while (rs.next());
-//
-//        return book;
     }
 }

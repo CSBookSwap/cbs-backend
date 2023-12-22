@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -38,6 +39,7 @@ import tech.cbs.api.service.dto.Page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -60,6 +62,8 @@ class AuthorRepositoryTest {
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:16.0-alpine3.18");
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     private static Author createAuthor() {
         return new Author(0, "Test Author fullname #" + rn.nextInt(), "test bio");
@@ -71,17 +75,18 @@ class AuthorRepositoryTest {
         for (int i = 0; i <= authorCount; i++) {
             authors.add(createAuthor());
         }
-        authors.forEach(authorRepository::save);
-        testAuthors.addAll(authorRepository.findAll(new Page(0, authorCount)));
+        authors.stream()
+                .map(authorRepository::save)
+                .map(authorRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(testAuthors::add);
     }
 
     @AfterEach
     void clearData() {
 
-        authorRepository.findAll(new Page(0, authorCount))
-                .parallelStream()
-                .map(Author::id)
-                .forEach(authorRepository::deleteById);
+        parameterJdbcTemplate.update("DELETE FROM author;", Map.of());
         testAuthors.clear();
     }
 

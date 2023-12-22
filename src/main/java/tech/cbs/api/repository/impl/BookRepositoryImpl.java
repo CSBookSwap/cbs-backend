@@ -38,6 +38,7 @@ import tech.cbs.api.service.dto.Page;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -66,37 +67,6 @@ public class BookRepositoryImpl implements BookRepository {
                 """;
 
         return parameterJdbcTemplate.query(sql, Map.of("offset", page.offset(), "size", page.size()), new BookResultSetExtractor());
-//        return parameterJdbcTemplate.query(sql, Map.of("offset", page.offset(), "size", page.size()),
-//                rs -> {
-//                    Map<Integer, Book> bookMap = new HashMap<>();
-//                    while (rs.next()) {
-//                        int id = rs.getInt("id");
-//                        Book book = bookMap.get(id);
-//                        if (book == null) {
-//                            book = new Book(
-//                                    id,
-//                                    rs.getString("title"),
-//                                    rs.getInt("author_id"),
-//                                    rs.getInt("publication_year"),
-//                                    rs.getString("isbn"),
-//                                    Level.valueOf(rs.getString("level")),
-//                                    rs.getString("description"),
-//                                    rs.getBoolean("available"),
-//                                    new HashSet<>()
-//                            );
-//                            bookMap.put(id, book);
-//                        }
-//                        int tagId = rs.getInt("tag_id");
-//                        if (tagId != 0) {
-//                            book.tags().add(
-//                                    new Tag(
-//                                            tagId,
-//                                            rs.getString("tag_name")
-//                                    ));
-//                        }
-//                    }
-//                    return new ArrayList<>(bookMap.values());
-//                });
     }
 
     @Override
@@ -111,8 +81,7 @@ public class BookRepositoryImpl implements BookRepository {
                 ORDER BY tag_id;
                 """;
 
-//        return parameterJdbcTemplate.query(sql, Map.of("id", id), new BookRowMapper())
-        return parameterJdbcTemplate.query(sql, Map.of("id", id), new BookResultSetExtractor())
+        return Objects.requireNonNull(parameterJdbcTemplate.query(sql, Map.of("id", id), new BookResultSetExtractor()))
                 .stream().findFirst();
     }
 
