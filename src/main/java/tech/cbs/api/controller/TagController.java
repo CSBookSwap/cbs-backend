@@ -1,5 +1,6 @@
 package tech.cbs.api.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class TagController {
 
     @PostMapping
     public ResponseEntity<TagDto> createTag(TagDto tagDto) {
-        return ResponseEntity.ok(tagService.createTag(tagDto));
+        return new ResponseEntity<>(tagService.createTag(tagDto), HttpStatus.CREATED);
     }
 
     @PutMapping

@@ -50,7 +50,7 @@ class TagServiceTest {
     @BeforeEach
     void setData() {
 
-        Map<String, TagDto> tags = new HashMap();
+        Map<String, TagDto> tags = new HashMap<>();
 
         for (int i = 0; i <= tagCount; i++) {
             var tag = new TagDto(0, "Tag name # " + rn.nextInt());
