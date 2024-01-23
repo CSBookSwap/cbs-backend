@@ -24,6 +24,7 @@
 
 package tech.cbs.api.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tech.cbs.api.service.AuthorService;
 import tech.cbs.api.service.dto.AuthorDto;
 import tech.cbs.api.service.dto.Page;
-import tech.cbs.api.service.impl.AuthorServiceImpl;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    public AuthorController(AuthorServiceImpl authorService) {
+    public AuthorController(AuthorService authorService) {
         this.authorService = authorService;
     }
 
@@ -61,7 +61,7 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<AuthorDto> createAuthor(AuthorDto authorDto) {
-        return ResponseEntity.ok(authorService.createAuthor(authorDto));
+        return new ResponseEntity<>(authorService.createAuthor(authorDto), HttpStatus.CREATED);
     }
 
     @PutMapping

@@ -177,7 +177,7 @@ class BookRepositoryTest {
     @Test
     void BookRepository_Update_ReturnsBoolean() {
 
-        Book bookFromDb = testBooks.get(rn.nextInt(testTags.size()) - 1);
+        Book bookFromDb = testBooks.get(rn.nextInt(testBooks.size()) - 1);
 
         Set<Tag> newTags = new HashSet<>();
         for (int i = 0; i <= rn.nextInt(4); i++) {
@@ -201,35 +201,6 @@ class BookRepositoryTest {
         boolean result = bookRepository.update(updatedBook);
 
         assertThat(result).isTrue();
-//
-//        Book updateBookFromDb = bookRepository.findById(testBookId).get();
-//
-//        assertThat(updateBookFromDb).isNotNull();
-//        assertThat(updateBookFromDb.id()).isEqualTo(bookFromDb.id());
-//
-//        assertThat(updateBookFromDb.title()).isEqualTo(updatedBook.title());
-//        assertThat(updateBookFromDb.title()).isNotEqualTo(bookFromDb.title());
-//
-//        assertThat(updateBookFromDb.authorId()).isEqualTo(updatedBook.authorId());
-//        assertThat(updateBookFromDb.authorId()).isNotEqualTo(bookFromDb.authorId());
-//
-//        assertThat(updateBookFromDb.publicationYear()).isEqualTo(updatedBook.publicationYear());
-//        assertThat(updateBookFromDb.publicationYear()).isNotEqualTo(bookFromDb.publicationYear());
-//
-//        assertThat(updateBookFromDb.isbn()).isEqualTo(updatedBook.isbn());
-//        assertThat(updateBookFromDb.isbn()).isNotEqualTo(bookFromDb.isbn());
-//
-//        assertThat(updateBookFromDb.level()).isEqualTo(updatedBook.level());
-//        assertThat(updateBookFromDb.level()).isNotEqualTo(bookFromDb.level());
-//
-//        assertThat(updateBookFromDb.description()).isEqualTo(updatedBook.description());
-//        assertThat(updateBookFromDb.description()).isNotEqualTo(bookFromDb.description());
-//
-//        assertThat(updateBookFromDb.available()).isEqualTo(updatedBook.available());
-//        assertThat(updateBookFromDb.available()).isNotEqualTo(bookFromDb.available());
-//
-//        assertThat(updateBookFromDb.tags()).isEqualTo(updatedBook.tags());
-//        assertThat(updateBookFromDb.tags()).isNotEqualTo(bookFromDb.tags());
     }
 
     @Test
