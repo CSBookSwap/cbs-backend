@@ -51,8 +51,6 @@ jobs:
         with:
           name: artifacts
 
-      - run: tree -L 3
-
       - name: DockerHub Login
         uses: docker/login-action@v3.0.0
         with:
