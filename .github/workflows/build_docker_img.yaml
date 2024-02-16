@@ -1,10 +1,7 @@
 name: Build Docker Image
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
 
@@ -27,7 +24,7 @@ jobs:
         run: ./mvnw -B package -DskipTests
 
       - name: Copy artifact
-        run: mv -R target/**.jar application.jar
+        run: mv target/**.jar application.jar
 
       - name: Extract JAR
         run: java -Djarmode=layertools -jar application.jar extract --destination app/extracted-jar

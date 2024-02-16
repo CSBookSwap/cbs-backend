@@ -56,3 +56,10 @@ jobs:
           git checkout main
           git merge -Xtheirs --allow-unrelated-histories dev
           git push origin main
+
+  build_docker_img:
+    needs: [tests]
+
+    steps:
+      name: Build and push Docker image
+      uses: ./.github/workflows/build_docker_img.yaml
