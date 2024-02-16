@@ -1,21 +1,27 @@
 spring:
+  application:
+    name: CS Book Swap Backend
   main:
     banner-mode: off
   datasource:
-    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST:localhost}:${BOOKSWAP_POSTGRES_PORT:5432}/bookswap_db?currentSchema=bookswap
-    username: bookswap-api
-    password: ${STORE_POSTGRES_PASSWORD:bookswapPassWord}
+    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST}:${BOOKSWAP_POSTGRES_PORT}/${BOOKSWAP_POSTGRES_DB}?currentSchema=${BOOKSWAP_POSTGRES_BACKEND_SCHEMA}
+    username: ${BOOKSWAP_POSTGRES_USER}
+    password: ${BOOKSWAP_POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   security:
     oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-          github:
-            client-id: ${GITHUB_CLIENT_ID}
-            client-secret: ${GITHUB_CLIENT_SECRET}
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_HOST}/auth/realms/${KEYCLOAK_REALM}
+          jwk-set-uri: ${KEYCLOAK_HOST}/auth/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs
+#      client:
+#        registration:
+#          google:
+#            client-id: ${GOOGLE_CLIENT_ID}
+#            client-secret: ${GOOGLE_CLIENT_SECRET}
+#          github:
+#            client-id: ${GITHUB_CLIENT_ID}
+#            client-secret: ${GITHUB_CLIENT_SECRET}
 
 server:
   port: 8080
