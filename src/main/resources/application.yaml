@@ -4,7 +4,7 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST}:${BOOKSWAP_POSTGRES_PORT}/${BOOKSWAP_POSTGRES_DB}?currentSchema=${BOOKSWAP_POSTGRES_BACKEND_SCHEMA}
+    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST}:5432/${BOOKSWAP_POSTGRES_DB}?currentSchema=${BOOKSWAP_POSTGRES_BACKEND_SCHEMA}
     username: ${BOOKSWAP_POSTGRES_USER}
     password: ${BOOKSWAP_POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -12,8 +12,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:cs-book-swap-test}
-          jwk-set-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:cs-book-swap-test}/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:def-realm}
+          jwk-set-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:def-realm}/protocol/openid-connect/certs
 #      client:
 #        registration:
 #          google:
