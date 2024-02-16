@@ -2,11 +2,22 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST:localhost}:${BOOKSWAP_POSTGRES_PORT:5432}/bookswap_db
+    url: jdbc:postgresql://${BOOKSWAP_POSTGRES_HOST:localhost}:${BOOKSWAP_POSTGRES_PORT:5432}/bookswap_db?currentSchema=bookswap
     username: bookswap-api
     password: ${STORE_POSTGRES_PASSWORD:bookswapPassWord}
     driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
 
 server:
-  port: 8082
+  port: 8080
+
 

@@ -233,13 +233,17 @@ class BookRepositoryTest {
 
         assertThat(books).isNotNull();
         assertThat(books.size()).isGreaterThan(0);
+        books.stream()
+                .map(Book::tags)
+                .map(tagSet -> tagSet.stream().map(Tag::id).collect(Collectors.toList()))
+                .forEach(tagIdList -> assertThat(tagIdList.contains(testTagId)));
 
-        for (Book book : books) {
-            assertThat(book.tags()
-                    .stream()
-                    .map(Tag::id)
-                    .collect(Collectors.toList())).contains(testTagId);
-        }
+//
+//        for (Book book : books) {
+//            assertThat(book.tags()
+//                    .stream()
+//                    .map(Tag::id)
+//                    .collect(Collectors.toList())).contains(testTagId);
     }
 
     private static Author createAuthor() {

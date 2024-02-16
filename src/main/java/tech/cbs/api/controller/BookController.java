@@ -26,9 +26,11 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<BookDto>> getBooks(@RequestBody Page page) {
-        return ResponseEntity.ok(bookService.getBooks(page));
+    @GetMapping("/{num}/{size}")
+    public ResponseEntity<List<BookDto>> getBooks(
+            @PathVariable("num") int num,
+            @PathVariable("size") int size) {
+        return ResponseEntity.ok(bookService.getBooks(new Page(num, size)));
     }
 
     @GetMapping("/{id}")

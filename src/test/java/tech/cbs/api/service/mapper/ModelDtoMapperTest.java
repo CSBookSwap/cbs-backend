@@ -137,14 +137,45 @@ class ModelDtoMapperTest {
 
     @Test
     void AuthorMapper_ToModel_ReturnAuthor() {
+        AuthorDto authorDto = new AuthorDto(
+                rn.nextInt(1, 1000),
+                "Test Author full name",
+                "Test Author biography"
+        );
 
+        Author author = AuthorMapper.toModel(authorDto);
+
+        assertThat(author).isNotNull();
+        assertThat(author.id()).isEqualTo(authorDto.id());
+        assertThat(author.name()).isEqualTo(authorDto.name());
+        assertThat(author.biography()).isEqualTo(authorDto.biography());
     }
 
     @Test
     void TagMapper_ToDto_ReturnsTagDto() {
+        Tag tag = new Tag(
+                rn.nextInt(1, 1000),
+                "Test Tag Name"
+        );
+
+        TagDto tagDto = TagMapper.toDto(tag);
+
+        assertThat(tagDto).isNotNull();
+        assertThat(tagDto.id()).isEqualTo(tag.id());
+        assertThat(tagDto.name()).isEqualTo(tag.name());
     }
 
     @Test
     void TagMapper_ToModel_ReturnTag() {
+        TagDto tagDto = new TagDto(
+                rn.nextInt(1, 1000),
+                "Test Tag Name"
+        );
+
+        Tag tag = TagMapper.toModel(tagDto);
+
+        assertThat(tag).isNotNull();
+        assertThat(tag.id()).isEqualTo(tagDto.id());
+        assertThat(tag.name()).isEqualTo(tagDto.name());
     }
 }

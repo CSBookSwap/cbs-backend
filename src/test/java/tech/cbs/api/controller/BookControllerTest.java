@@ -52,7 +52,7 @@ class BookControllerTest {
         var books = createBooks();
         doReturn(books).when(this.bookService).getBooks(new Page(0, booksCount));
 
-        var responseEntity = this.bookController.getBooks(new Page(0, booksCount));
+        var responseEntity = this.bookController.getBooks(0, booksCount);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo(books);
