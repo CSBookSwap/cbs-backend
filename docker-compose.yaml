@@ -3,11 +3,23 @@ version: '3.8'
 services:
 
   bookswap_db_postgres:
-    image: postgres:16.0-alpine3.18
+    image: postgres:16.1-alpine3.19
     container_name: bookswap_db_postgres
     environment:
-      POSTGRES_USER: bookswap-api
-      POSTGRES_PASSWORD: bookswapPassWord
-      POSTGRES_DB: bookswap_db
+      POSTGRES_USER: bookswap-dev
+      POSTGRES_PASSWORD: devPassword
+    volumes:
+      - cbs-data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
     ports:
       - '5432:5432'
+    networks:
+      - bookswap_network
+
+networks:
+  bookswap_network:
+    driver: bridge
+
+volumes:
+  cbs-data:
+    driver: local

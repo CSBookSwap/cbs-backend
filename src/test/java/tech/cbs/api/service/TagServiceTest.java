@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Testcontainers
 class TagServiceTest {
 
-
     private static final List<TagDto> testTags = new ArrayList<>();
     private static final int tagCount = 42;
     private static final Random rn = new Random();
@@ -74,7 +73,7 @@ class TagServiceTest {
     }
 
     @Test
-    void TestService_GetTags_ReturnListOfTagDto() {
+    void TagService_GetTags_ReturnListOfTagDto() {
         List<TagDto> tags = tagService.getTags(new Page(0, tagCount));
         assertThat(tags).isNotNull();
         assertThat(tags).isNotEmpty();

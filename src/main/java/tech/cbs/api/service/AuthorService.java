@@ -16,3 +16,4 @@ public interface AuthorService {
 
     boolean deleteAuthor(int id);
 }
+
