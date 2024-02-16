@@ -59,7 +59,5 @@ jobs:
 
   build_docker_img:
     needs: [tests]
-
-    steps:
-      name: Build and push Docker image
-      uses: ./.github/workflows/build_docker_img.yaml
+    name: Build and push Docker image
+    uses: ./.github/workflows/build_docker_img.yaml
