@@ -12,8 +12,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_HOST}/auth/realms/${KEYCLOAK_REALM}
-          jwk-set-uri: ${KEYCLOAK_HOST}/auth/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs
+          issuer-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:cs-book-swap-test}
+          jwk-set-uri: ${KEYCLOAK_HOST:http://localhost:8083}/auth/realms/${KEYCLOAK_REALM:cs-book-swap-test}/protocol/openid-connect/certs
 #      client:
 #        registration:
 #          google:
